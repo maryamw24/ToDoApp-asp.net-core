@@ -168,26 +168,14 @@
                     <input type="password" class="form-control" id="Cpassword" placeholder="Confirm Password" required>
                 </div>
                 <input type="hidden" class="form-control" id="Finalpassword" asp-for="Password">
-                <label id="ErrorMsg"></label>
+                @if(TempData["ErrorOnServer"] != null)
+                {
+                    <label>@TempData["ErrorOnServer"]</label>
+                }
                 <button type="submit" id="SignUp" class="btn w-100">Sign Up</button>
             </form>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        let signUpBtn = document.getElementById('SignUp');
-        signUpBtn.addEventListener('click', checkPassword);
-
-        function checkPassword(event) {
-            if (document.getElementById('newPassword').value == document.getElementById('Cpassword').value) {
-                document.getElementById('Finalpassword').value = document.getElementById('Cpassword').value;
-            } else {
-                document.getElementById('Finalpassword').value = "Not matched";
-                let error = document.getElementById('ErrorMsg');
-                error.innerHTML = "Your passwords do not match!!";
-                event.preventDefault();
-            }
-        }
-    </script>
 </body>
 </html>

@@ -20,8 +20,10 @@ namespace ToDoList.Pages
 
         public void OnPostSignUp()
         {
-            if (Password != "Not matched" && Password != null) {
-                if (UserController.isUserAvailable(userName))
+            if (UserController.isUserAvailable(userName))
+            {
+                if (Password != "Not matched" && Password != null)
+
                 {
                     User u = new User();
                     u.UserName = userName;
@@ -30,6 +32,14 @@ namespace ToDoList.Pages
                     UserController.AddUser(u);
                     UserController.LoadUsers();
                 }
+                else
+                {
+                    TempData["ErrorOnServer"] = "Your passwords doesnot match!!";
+                }
+            }
+            else
+            {
+                TempData["ErrorOnServer"] = "This username is already occupied. Choose a new one.";
             }
         }
     }

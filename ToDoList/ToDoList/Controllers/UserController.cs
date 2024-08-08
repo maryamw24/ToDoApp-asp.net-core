@@ -74,11 +74,11 @@ namespace ToDoList.Controllers
 
         public static bool isUserAvailable(string username)
         {
-            if (users.Find(u => u.UserName == username) != null)
+            if (users.Find(u => u.UserName == username) == null)
             {
-                return false;
+                return true;
             }
-            return true;
+            return false;
         }
     }
 }

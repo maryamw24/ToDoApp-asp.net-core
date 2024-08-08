@@ -142,6 +142,7 @@
                     <h4 id="taskName"></h4>
                     <input type="hidden" class="form-control" id="resTaskId" asp-for="Id" />
                     <label>Task Due Date</label>
+                    <p>(Your due date should be greater or equal to date today, otherwise your task will not be reschedualed.)</p>
                     <input type="datetime-local" class="form-control" id="taskDueDate" asp-for="DueDate" required>
                 </div>
                 <div class="modal-footer">
@@ -203,15 +204,19 @@
     <script>
         function updateTaskList(event) {
             var selectedValue = document.querySelector('input[name="ToDisplay"]:checked').value;
+            window.location.href = `?ToDisplay=${selectedValue}`;
+            event.preventDefault();
+        }
+        function updateByDate(event){
             var selectedDate = document.getElementById('taskDate').value;
-            window.location.href = `?SelectedDate=${selectedDate}&ToDisplay=${selectedValue}`;
+            window.location.href = `?SelectedDate=${selectedDate}`;
             event.preventDefault();
         }
 
         document.getElementById('Today-RBtn').addEventListener('change', updateTaskList);
         document.getElementById('Tomorrow-RBtn').addEventListener('change', updateTaskList);
         document.getElementById('All-RBtn').addEventListener('change', updateTaskList);
-        document.getElementById('taskDate').addEventListener('change', updateTaskList);
+        document.getElementById('taskDate').addEventListener('change', updateByDate);
 
 
         function populateEditModal(id, Name) {

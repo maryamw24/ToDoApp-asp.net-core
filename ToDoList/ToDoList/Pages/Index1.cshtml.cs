@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ToDoList.Models;
 using ToDoList.Controllers;
+using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
 
 namespace ToDoList.Pages
 {
@@ -59,22 +60,36 @@ namespace ToDoList.Pages
 
         public void OnPostEditTask()
         {
-            int id = int.Parse(User.FindFirst("UserId")?.Value);
-            task Task = TaskController.getTaskById(Id);
-            Task.Title = Title; 
-            TaskController.UpdateTask(Task);
-            TaskController.LoadTasks(id);
-            Response.Redirect("#");
+            if (Title != null)
+            {
+                int id = int.Parse(User.FindFirst("UserId")?.Value);
+                task Task = TaskController.getTaskById(Id);
+                Task.Title = Title;
+                TaskController.UpdateTask(Task);
+                TaskController.LoadTasks(id);
+                Response.Redirect("#");
+            }
+            else
+            {
+                TempData["ErrorOnServer"] = "It can not be empty";
+            }
         }
 
         public void OnPostResTask()
         {
-            int id = int.Parse(User.FindFirst("UserId")?.Value);
-            task task = TaskController.getTaskById(Id);
-            task.DueDate = DueDate;
-            TaskController.UpdateTask(task);
-            TaskController.LoadTasks(id);
-            Response.Redirect("#");
+            if (DueDate >= DateTime.Now)
+            {
+                int id = int.Parse(User.FindFirst("UserId")?.Value);
+                task task = TaskController.getTaskById(Id);
+                task.DueDate = DueDate;
+                TaskController.UpdateTask(task);
+                TaskController.LoadTasks(id);
+                Response.Redirect("#");
+            }
+            else
+            {
+                TempData["ErrorOnServer"] = "Reschedualling date cannot be before today.";
+            }
         }
 
         public void OnPostMarkIncomplete()

@@ -32,6 +32,11 @@ namespace ToDoList.Pages
             int id = int.Parse(User.FindFirst("UserId")?.Value);
             try
             {
+                if(task.DueDate.Date < DateTime.Today.Date)
+                {
+                    TempData["ErrorOnServer"] = "Due Date should be greater than or equal to today's date";
+                    return;
+                }
                 TaskController.AddTask(task, id);
             }
             catch (Exception ex)

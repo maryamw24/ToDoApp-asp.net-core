@@ -153,6 +153,11 @@
                     <i class="fas fa-lock icon"></i>
                     <input type="password" class="form-control" id="password" name="password" placeholder="Password" asp-for="Password" required>
                 </div>
+                @if (TempData["ErrorOnServer"] != null)
+                {
+                    
+                <label id="error">@TempData["ErrorOnServer"]</label>
+                }
                 <button type="submit" class="btn w-100">Login</button>
                 <div class="text-center mt-2">
                     <span>Don't have an account?</span> <a href="/SignUp">Sign Up</a>
