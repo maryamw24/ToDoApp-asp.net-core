@@ -1,0 +1,193 @@
+﻿@page
+@model ToDoList.Pages.SignUpModel
+@{
+    Layout = null;
+    ViewData["Title"] = "SignUp";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-image: url(../images/loginBg.png);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .signUp-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 90%;
+            max-width: 700px;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .signUp-container {
+            padding: 2rem;
+            width: 100%;
+            max-width: 500px;
+        }
+
+            .signUp-container h2 {
+                margin-bottom: 1.5rem;
+            }
+
+            .signUp-container .form-control {
+                border-radius: 8px;
+                padding-left: 2.5rem;
+            }
+
+            .signUp-container .btn {
+                border-radius: 8px;
+                background-color: #004aad;
+                border: none;
+                color: #fff;
+            }
+
+                .signUp-container .btn:hover {
+                    background-color: #f39c12;
+                }
+
+        .form-control-icon {
+            position: relative;
+        }
+
+            .form-control-icon .icon {
+                position: absolute;
+                left: 0.75rem;
+                top: 50%;
+                transform: translateY(-50%);
+                color: #6c757d;
+            }
+
+        .btn-back-home {
+            position: absolute;
+            top: 0.75rem;
+            left: 0.75rem;
+            font-size: 1.5rem;
+            border-radius: 50%;
+            background-color: transparent;
+            border: none;
+            color: #f39c12;
+            padding: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+            .btn-back-home:hover {
+                color: #e67e22;
+                background-color: rgba(243, 156, 18, 0.1);
+            }
+
+        img {
+            width: 200px;
+        }
+
+        #ErrorMsg {
+            color: red;
+        }
+
+        @@media (max-width: 768px) {
+            .signUp-wrapper {
+                width: 95%;
+                padding: 1rem;
+            }
+
+            .signUp-container {
+                padding: 1rem;
+            }
+
+            .btn-back-home {
+                top: 0.5rem;
+                left: 0.5rem;
+                font-size: 1.25rem;
+                padding: 0.25rem;
+            }
+        }
+
+        @@media (max-width: 576px) {
+            .signUp-wrapper {
+                width: 95%;
+                padding: 0.5rem;
+                border-radius: 0;
+                box-shadow: none;
+            }
+
+            .signUp-container {
+                padding: 0.5rem;
+            }
+
+            .btn-back-home {
+                top: 0.25rem;
+                left: 0.25rem;
+                font-size: 1rem;
+                padding: 0.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="signUp-wrapper">
+        <a href="/Index" class="btn-back-home">
+            <i class="fas fa-home"></i>
+        </a>
+        <div class="signUp-container">
+            <h2 class="text-center">Sign Up</h2>
+            <form method="post" asp-page-handler="SignUp" autocomplete="off">
+                <div class="mb-3 form-control-icon">
+                    <i class="fas fa-user icon"></i>
+                    <input type="text" class="form-control" id="name" name="name" autocomplete="new-name" placeholder="Name" asp-for="Name" required>
+                </div>
+                <div class="mb-3 form-control-icon">
+                    <i class="fas fa-user icon"></i>
+                    <input type="text" class="form-control" id="newUsername" name="username" autocomplete="new-username" placeholder="Username" asp-for="userName" required>
+                </div>
+                <div class="mb-3 form-control-icon">
+                    <i class="fas fa-lock icon"></i>
+                    <input type="password" class="form-control" id="newPassword" autocomplete="new-password" placeholder="Password" required>
+                </div>
+                <div class="mb-3 form-control-icon">
+                    <i class="fas fa-lock icon"></i>
+                    <input type="password" class="form-control" id="Cpassword" placeholder="Confirm Password" required>
+                </div>
+                <input type="hidden" class="form-control" id="Finalpassword" asp-for="Password">
+                <label id="ErrorMsg"></label>
+                <button type="submit" id="SignUp" class="btn w-100">Sign Up</button>
+            </form>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let signUpBtn = document.getElementById('SignUp');
+        signUpBtn.addEventListener('click', checkPassword);
+
+        function checkPassword(event) {
+            if (document.getElementById('newPassword').value == document.getElementById('Cpassword').value) {
+                document.getElementById('Finalpassword').value = document.getElementById('Cpassword').value;
+            } else {
+                document.getElementById('Finalpassword').value = "Not matched";
+                let error = document.getElementById('ErrorMsg');
+                error.innerHTML = "Your passwords do not match!!";
+                event.preventDefault();
+            }
+        }
+    </script>
+</body>
+</html>

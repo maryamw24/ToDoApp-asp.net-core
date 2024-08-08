@@ -1,0 +1,159 @@
+﻿@page
+@model IndexModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ToDoList</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/ToDoList.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            scroll-behavior: smooth;
+        }
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .section {
+            padding: 60px 0;
+            min-height: 100vh;
+        }
+        .bg-warning {
+            background-color: #ffc107 !important;
+        }
+        .navbar-nav .nav-link {
+            cursor: pointer;
+        }
+        #Login {
+            padding-inline: 15px;
+            padding-block: 5px;
+            background-color: transparent;
+            border-radius: 5px;
+            border-style: solid;
+            border-color: white;
+            border-width: 2px;
+        }
+        #Login-a {
+            color: white;
+            text-decoration: none;
+        }
+        #Signup-a {
+            text-decoration: none;
+            color: black;
+        }
+        #Sign-up {
+            padding-inline: 15px;
+            padding-block: 5px;
+            margin-left: 30px;
+            background-color: white;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-warning border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" href="#home">Taskly</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="#home">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="#features">Features</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav flex-grow-3">
+                        <li id="Login" class="nav-item"><a id="Login-a" href="/loginPage">Login</a></li>
+                        <li id="Sign-up" class="nav-item"><a id="Signup-a" href="/SignUp">Sign Up</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div id="home" class="section">
+        <div class="text-center">
+            <p class="text-center" style="font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-weight:bolder; font-size:60px">Organize Your Life</p>
+            <h4 class="text-center" style="font-family:Calibri; color:dimgrey ">Create, manage, and track your tasks with ease.<br> Never miss a deadline again!</h4>
+            <a href="/SignUp" style="text-decoration:none; color:black"><button class="btn btn-warning">Start For Free </button></a>
+        </div>
+            <img style="width:80%; margin-top:30px; margin-left:170px;" src="/Images/mainPage.png" />
+    </div>
+
+    <div id="features" class="section">
+        <div class="container">
+            <h2>Features</h2>
+            <div class="row justify-content-center">
+                <div class="col-md-4 d-flex justify-content-center">
+                    <div class="card mb-4">
+                        <img src="~/Images/addTask.png" />
+                        <div class="card-body">
+                            <h5 class="card-title">Add Tasks and Scheduale them</h5>
+                            <p class="card-text">Add your task title and then the due date till when the task should be completed.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 d-flex justify-content-center">
+                    <div class="card mb-4">
+                        <img src="~/Images/viewTasks.jpg" />
+                        <div class="card-body">
+                            <h5 class="card-title">View Tasks Mark as Complete and Incomplete</h5>
+                            <p class="card-text">View the tasks as per the date and change their statuses as per needed.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 d-flex justify-content-center">
+                    <div class="card mb-4">
+                        <img src="~/Images/editRes.jpg"/>
+                        <div class="card-body">
+                            <h5 class="card-title">Edit and Rescheduale Task</h5>
+                            <p class="card-text">The incompleted pending tasks can be reschedualed and also the task title can be altered.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p class="text-center" style="font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-weight:bolder; font-size:30px; margin-bottom:50px">Taskly will surely <br> make your life easier and managed.</p>
+    <footer class="footer bg-dark text-light py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <h5>About Us</h5>
+                    <p>At Taskly, we help you stay organized and boost productivity with our intuitive to-do list app. Manage tasks effortlessly and achieve your goals.</p>
+                </div>
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#home" class="text-light">Home</a></li>
+                        <li><a href="#features" class="text-light">Features</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="text-center mt-3">
+                <p class="mb-0">&copy; 2024 Taskly. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+</html>

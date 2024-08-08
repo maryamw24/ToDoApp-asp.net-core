@@ -1,0 +1,67 @@
+﻿@page
+@model MainPageModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <style>
+        body {
+            background-image: url("../images/bgToTO.jpg");
+            background-size:cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+</style>
+</head>
+<body>
+<div class="text-center" >
+        <h2 style="font-family:Calibri">Hey @Model.Name,</h2>
+        <h1 style="font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-weight:bolder; font-size:40px">Welcome to Taskly</h1>
+        <h4 style="font-family:Calibri">Here your can add your tasks and scheduale it as per your wish. </h4>
+        <h5 style="font-family:Calibri; margin-top:50px">Get Started Now</h5>
+    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#addTask-modal">Add Task</button>
+</div>
+
+
+<!--modal for adding task-->
+
+<div class="modal fade" id="addTask-modal" tabindex="-1" aria-labelledby="modal-title" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" id="addTaskModel" asp-page-handler="AddTask">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-title">Add Task</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <label >Task Name</label>
+                    <input type="text" class="form-control" asp-for="task.Title" placeholder="Enter Task Name">
+                <label >Select Date</label>
+                    <input type="date" class="form-control" asp-for="task.DueDate" placeholder="Enter Due Date">
+
+            </div>
+            <div class="modal-footer">
+                <button id="addTask" type="submit" class="btn btn-warning">Add</button>
+             </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+        $('#addTask').click(function() {
+            $('#addTask-Modal').modal('hide');
+    });
+</script>
+</body>
+
+
+

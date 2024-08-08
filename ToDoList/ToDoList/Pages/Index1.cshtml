@@ -1,0 +1,239 @@
+﻿@page
+@model ToDoList.Pages.Index1Model
+@{
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <style>
+        body {
+            background-image: url("../images/bgToTO.jpg");
+            background-size: cover;
+            background-position: center;
+
+        }
+        .backdrop-filter {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(2px) brightness(0.8);
+            background: rgba(255, 255, 255, 0.3);
+            z-index: -1;
+        }</style>
+</head>
+<body>
+<div class="container">
+    <h1 id="Main-Heading">@Model.mainHeading</h1>
+    <div class="upper-part">
+        <div class="form-group">
+            <label for="taskDate">Select Date:</label>
+            <input type="datetime-local" id="taskDate" name="taskDate" class="form-control" asp-for="SelectedDate" />
+        </div>
+        <form method="get">
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" asp-for="ToDisplay" id="Today-RBtn" value="Today" />
+                <label class="form-check-label" for="Today-RBtn">Today</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" asp-for="ToDisplay" id="Tomorrow-RBtn" value="Tomorrow"  />
+                <label class="form-check-label" for="Tomorrow-RBtn">Tomorrow</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" asp-for="ToDisplay" id="All-RBtn" value="All" />
+                <label class="form-check-label" for="All-RBtn">All</label>
+            </div>
+        </form>
+    </div>
+    <div class="task-list">
+        @foreach (var task in Model.Tasks)
+        {
+            <div class="task-item">
+                <span class="task-status">
+                    @if (task.Status == "Incomplete")
+                    {
+                        <img class="task-status" src="~/Images/redCircle.png" />
+                    }
+                    @if (task.Status == "Completed")
+                    {
+                        <img class="task-status" src="/Images/greenCircle.png" />
+                    }
+                    @if (task.Status == "Pending")
+                    {
+                        <img class="task-status" src="~/Images/yellowCircle.png" />
+                    }
+                </span>
+                <div class="single-unit">
+                    <span class="task-title">@task.Title</span>
+                    <span class="task-date">@task.DueDate.Date</span>
+                </div>
+                <span class="task-actions">
+                    @if (task.Status == "Pending")
+                    {
+                        <button id="EditBtn" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#edit-modal" onclick="populateEditModal('@task.Id', '@task.Title')">Edit</button>
+                        <button id="ResBtn" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#res-modal" onclick="populateResModal('@task.Id', '@task.DueDate.Date', '@task.Title')">Reschedule</button>
+                        <form method="post" asp-page-handler="Markcomplete">
+                            <input type="hidden" name="id" value="@task.Id" asp-for="Id" />
+                        <button id="ComBtn" class="btn btn-success btn-sm">Mark as Completed</button>
+                        </form>
+                        <form method="post" asp-page-handler="Delete">
+                            <input type="hidden" name="id" value="@task.Id" asp-for="Id" />
+                            <button id="DelBtn" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                    }
+                    @if (task.Status == "Incomplete")
+                    {
+
+                        <button id="ResBtn" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#res-modal" onclick="populateResModal('@task.Id', '@task.DueDate','@task.Title')">Reschedule</button>
+
+                    }
+                    @if (task.Status == "Completed")
+                    {
+                        <form method="post" asp-page-handler="MarkIncomplete">
+                            <input type="hidden" name="id" value="@task.Id" asp-for="Id" />
+                            <button type="submit" id="InComBtn" class="btn btn-danger btn-sm">Mark as Incomplete</button>
+                        </form>
+                    }
+                </span>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Modal for editing task -->
+<div class="modal fade" id="edit-modal" tabindex="-1" aria-labelledby="modal-title" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" id="editTask" asp-page-handler="EditTask">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-title">Edit Task</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" class="form-control" id="taskId" asp-for="Id" />
+                    <label>Task Name</label>
+                    <input type="text" class="form-control" id="taskTitle" asp-for="Title" required>
+                </div>
+                <div class="modal-footer">
+                    <button id="editTask" type="submit" class="btn btn-warning">Edit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for rescheduling task -->
+<div class="modal fade" id="res-modal" tabindex="-1" aria-labelledby="modal-title" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" id="resTask" asp-page-handler="ResTask">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-title">Reschedule Task</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h4 id="taskName"></h4>
+                    <input type="hidden" class="form-control" id="resTaskId" asp-for="Id" />
+                    <label>Task Due Date</label>
+                    <input type="datetime-local" class="form-control" id="taskDueDate" asp-for="DueDate" required>
+                </div>
+                <div class="modal-footer">
+                    <button id="resTask" type="submit" class="btn btn-warning">Confirm</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+@section Styles {
+    <style>
+        .upper-part {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .task-list {
+            margin-top: 20px;
+            margin-bottom: 30px;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .task-status {
+            margin-right: 10px;
+        }
+
+        .single-unit {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .task-date {
+            font-size: 12px;
+            color: #777;
+        }
+
+        .task-actions{
+            display: flex;
+            flex-direction: row;
+        }
+
+        .task-actions button {
+            margin-left: 5px;
+            display: inline-block;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        function updateTaskList(event) {
+            var selectedValue = document.querySelector('input[name="ToDisplay"]:checked').value;
+            var selectedDate = document.getElementById('taskDate').value;
+            window.location.href = `?SelectedDate=${selectedDate}&ToDisplay=${selectedValue}`;
+            event.preventDefault();
+        }
+
+        document.getElementById('Today-RBtn').addEventListener('change', updateTaskList);
+        document.getElementById('Tomorrow-RBtn').addEventListener('change', updateTaskList);
+        document.getElementById('All-RBtn').addEventListener('change', updateTaskList);
+        document.getElementById('taskDate').addEventListener('change', updateTaskList);
+
+
+        function populateEditModal(id, Name) {
+            let Id = document.getElementById('taskId');
+            Id.value = id;
+            let editBox = document.getElementById('taskTitle');
+            editBox.value = Name;
+        }
+
+        function populateResModal(id, DueDate, Name) {
+            let Id = document.getElementById('resTaskId');
+            Id.value = id;
+            let dueDateElement = document.getElementById('taskDueDate');
+            dueDateElement.value = DueDate;
+            let nameHeading = document.getElementById('taskName');
+            nameHeading.innerHTML = Name;
+
+        }
+
+        function confirmEdit() {
+            return confirm("Are you sure you want to edit this task?");
+        }
+    </script>
+}
+</html>
