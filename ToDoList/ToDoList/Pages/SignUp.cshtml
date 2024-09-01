@@ -177,5 +177,20 @@
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let signUpBtn = document.getElementById('SignUp');
+        signUpBtn.addEventListener('click', checkPassword);
+
+        function checkPassword(event) {
+            if (document.getElementById('newPassword').value == document.getElementById('Cpassword').value) {
+                document.getElementById('Finalpassword').value = document.getElementById('Cpassword').value;
+            } else {
+                document.getElementById('Finalpassword').value = "Not matched";
+                let error = document.getElementById('ErrorMsg');
+                error.innerHTML = "Your passwords do not match!!";
+                event.preventDefault();
+            }
+        }
+    </script>
 </body>
 </html>
